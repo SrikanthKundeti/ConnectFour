@@ -1,0 +1,110 @@
+import java.util.Scanner;
+
+public class ConnectFour {
+
+    public static int SelectColumn(int PlayerNumber,int ColumnNumber,int height,int[][] board) {
+        ColumnNumber = ColumnNumber - 1;
+        for(int i = height;i >= 0; i--) {
+            if(board[i][ColumnNumber] == 0) {
+                board[i][ColumnNumber] = PlayerNumber;
+                PlayerNumber = i;
+                break;
+            }
+        }
+
+            return PlayerNumber;
+
+    }
+
+    public static void PrintBoard(int[][] board, int height, int base) {
+        for (int j = 0; j < base; j++) {
+
+            System.out.print("\u001B[32m----");
+            System.out.print(" ");
+        }
+        System.out.println();
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < base; j++) {
+
+                System.out.print("|  |");
+                System.out.print(" ");
+
+            }
+            System.out.println();
+            for (int j = 0; j < base; j++) {
+                if(board[i][j] == 0) {
+                    System.out.print("|" + "\u001B[32m" + "  |");
+                } else {
+                    //Can place any number of Player NUMBERS.
+                    if(board[i][j] < 10) {
+                        System.out.print("|" + "\u001B[32m" + board[i][j] + " |");
+                    } else {
+                        System.out.print("|" + "\u001B[32m" + board[i][j] + "|");
+                    }
+                }
+                System.out.print(" ");
+            }
+            System.out.println();
+
+            for (int j = 0; j < base; j++) {
+
+                System.out.print("----");
+                System.out.print(" ");
+            }
+
+
+            //To Sperate Line-By-Line
+            System.out.println(" ");
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner Scanner = new Scanner(System.in);
+        System.out.println("Please Select the Size of the Base of the Board:");
+        int base = Integer.parseInt(Scanner.next());
+        System.out.println("Please Select the Height of the Board");
+        int height = Integer.parseInt(Scanner.next());
+        int[][] board = new int[height][base];
+
+        for(int i = 0; i < height;i++) {
+            for(int j = 0; j < base; j++) {
+                board[i][j] = 0;
+            }
+        }
+
+
+        System.out.println("Choose Number of PLAYERS(Limit: 99 Players)");
+        int NumPlayers = Integer.parseInt(Scanner.next());
+        System.out.println("Choose Number of Bots To Play");
+        int NumBots = Integer.parseInt(Scanner.next());
+        NumPlayers = NumPlayers - NumBots;
+
+        System.out.println("(Manual) Players: " + NumPlayers);
+        System.out.println("(Bots) Artificial Players: " + NumBots);
+
+        System.out.println("START GAME (Type 'E' for Exit)");
+        PrintBoard(board,height,base);
+
+        int Turn = 1;
+        int Choice;
+        while(Scanner.hasNext()) {
+            if(Scanner.next().contains("E") || Scanner.next().contains("e")) {
+                System.out.println("You have Chosen to Exit the Game!");
+                break;
+            }
+            if(Turn == (NumPlayers + NumBots)) {
+                Turn = 0;
+                continue;
+            }
+
+            System.out.println("Player " + Turn + " Choose a Column between 1 and " + base);
+            Choice = Integer.parseInt(Scanner.next());
+            SelectColumn(Turn,Choice,height,board);
+
+            Turn++;
+        }
+
+
+
+    }
+}
